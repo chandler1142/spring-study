@@ -15,4 +15,20 @@
     <!-- <context:component-scan base-package="com.springmvc.controller" /> -->
     <!--  让DispatcherServlet启用-->
     <mvc:annotation-driven/>
+
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/jsp/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <bean id="simpleUrlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+        <property name="mappings">
+            <props>
+                <prop key="/userlist.html">userController</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="userController" class="com.chandler.controller.UserController"/>
+
 </beans>
