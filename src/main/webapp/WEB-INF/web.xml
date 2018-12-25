@@ -17,6 +17,7 @@
             <param-name>contextConfigLocation</param-name>
             <param-value>/WEB-INF/spring-mvc-servlet.xml</param-value>
         </init-param>
+        <!-- load-on-startup元素标记容器是否在启动的时候就加载这个servlet -->
         <load-on-startup>1</load-on-startup>
     </servlet>
 
@@ -36,5 +37,8 @@
 
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+    <listener>
+        <listener-class>com.chandler.context.MyDataContextListener</listener-class>
     </listener>
 </web-app>

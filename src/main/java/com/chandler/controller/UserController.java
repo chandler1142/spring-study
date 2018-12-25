@@ -1,6 +1,8 @@
 package com.chandler.controller;
 
 import com.chandler.model.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractController;
 
@@ -11,6 +13,7 @@ import java.util.List;
 
 public class UserController extends AbstractController {
 
+    Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
     protected ModelAndView handleRequestInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws Exception {
@@ -26,6 +29,8 @@ public class UserController extends AbstractController {
         userB.setUsername("Xiao B");
         userList.add(userB);
 
+        String myDataValue = (String) getServletContext().getAttribute("myData");
+        logger.info("myDataValue: {} ", myDataValue);
         return new ModelAndView("userlist", "users", userList);
     }
 }
