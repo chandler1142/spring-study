@@ -28,4 +28,15 @@
         <!--</property>-->
         <!--<property name="order" value="1"/>-->
     <!--</bean>-->
+
+    <bean id="simpleUrlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+        <property name="mappings">
+            <props>
+                <prop key="/userlist.html">userController</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="userController" class="com.chandler.controller.UserController"/>
+
 </beans>
