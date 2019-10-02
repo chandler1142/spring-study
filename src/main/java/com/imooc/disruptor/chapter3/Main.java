@@ -4,6 +4,7 @@ import com.lmax.disruptor.BusySpinWaitStrategy;
 import com.lmax.disruptor.EventFactory;
 import com.lmax.disruptor.RingBuffer;
 import com.lmax.disruptor.dsl.Disruptor;
+import com.lmax.disruptor.dsl.EventHandlerGroup;
 import com.lmax.disruptor.dsl.ProducerType;
 
 import java.util.concurrent.CountDownLatch;
@@ -18,7 +19,8 @@ public class Main {
         long start = System.currentTimeMillis();
 
         //构建一个线程池用于提交任务
-        ExecutorService es = Executors.newFixedThreadPool(4);
+        ExecutorService es1 = Executors.newFixedThreadPool(4);
+        ExecutorService es2 = Executors.newFixedThreadPool(4);
 
         //1. 构建Disruptor
         Disruptor<Trade> disruptor = new Disruptor<Trade>(
@@ -29,23 +31,35 @@ public class Main {
                     }
                 },
                 1024 * 1024,
-                Executors.newFixedThreadPool(64),
+                es2,
                 ProducerType.SINGLE,
                 new BusySpinWaitStrategy()
         );
 
         //2. 把消费者设置Disruptor中handleEventsWith
 
+        //2.1 串行操作
+//        EventHandlerGroup<Trade> eventHandlerGroup = disruptor
+//                .handleEventsWith(new Handler1())
+//                .handleEventsWith(new Handler2())
+//                .handleEventsWith(new Handler3());
+//
+        //2.2 并行操作
+        disruptor.handleEventsWith(new Handler1());
+        disruptor.handleEventsWith(new Handler2());
+        disruptor.handleEventsWith(new Handler3());
+
         //3. 启动Disruptor
         RingBuffer<Trade> ringBuffer = disruptor.start();
 
         CountDownLatch latch = new CountDownLatch(1);
 
-        es.submit(new TradePublisher(latch, disruptor));
+        es1.submit(new TradePublisher(latch, disruptor));
 
         latch.await(); //主函数阻塞，进行向下
 
-        es.shutdown();
+        es1.shutdown();
+        es2.shutdown();
         disruptor.shutdown();
 
         System.out.println("总耗时： " + (System.currentTimeMillis() - start));
