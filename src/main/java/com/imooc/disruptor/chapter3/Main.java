@@ -20,7 +20,8 @@ public class Main {
 
         //构建一个线程池用于提交任务
         ExecutorService es1 = Executors.newFixedThreadPool(4);
-        ExecutorService es2 = Executors.newFixedThreadPool(10);
+        // Handler个数和线程数息息相关
+        ExecutorService es2 = Executors.newFixedThreadPool(5);
 
         //1. 构建Disruptor
         Disruptor<Trade> disruptor = new Disruptor<Trade>(
