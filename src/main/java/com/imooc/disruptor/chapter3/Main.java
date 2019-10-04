@@ -20,7 +20,7 @@ public class Main {
 
         //构建一个线程池用于提交任务
         ExecutorService es1 = Executors.newFixedThreadPool(4);
-        ExecutorService es2 = Executors.newFixedThreadPool(4);
+        ExecutorService es2 = Executors.newFixedThreadPool(10);
 
         //1. 构建Disruptor
         Disruptor<Trade> disruptor = new Disruptor<Trade>(
@@ -50,8 +50,20 @@ public class Main {
 //        disruptor.handleEventsWith(new Handler3());
 
         //2.3 菱形操作
-        EventHandlerGroup<Trade> eventHandlerGroup = disruptor.handleEventsWith(new Handler1(), new Handler2());
-        eventHandlerGroup.then(new Handler3());
+//        EventHandlerGroup<Trade> eventHandlerGroup = disruptor.handleEventsWith(new Handler1(), new Handler2());
+//        eventHandlerGroup.then(new Handler3());
+
+        //2.4 multi edge operation
+        Handler1 h1 = new Handler1();
+        Handler2 h2 = new Handler2();
+        Handler3 h3 = new Handler3();
+        Handler4 h4 = new Handler4();
+        Handler5 h5 = new Handler5();
+
+        disruptor.handleEventsWith(h1, h4);
+        disruptor.after(h1).handleEventsWith(h2);
+        disruptor.after(h4).handleEventsWith(h5);
+        disruptor.after(h2,h5).handleEventsWith(h3);
 
         //3. 启动Disruptor
         RingBuffer<Trade> ringBuffer = disruptor.start();
