@@ -2,6 +2,7 @@ package com.imooc.disruptor.chapter2;
 
 import com.lmax.disruptor.BlockingWaitStrategy;
 import com.lmax.disruptor.RingBuffer;
+import com.lmax.disruptor.YieldingWaitStrategy;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
 
@@ -16,6 +17,7 @@ public class Main {
         //实例化Disruptor对象
 
         ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+        int ringBufferSize = 4;
 
         /**
          * 1. 消息工厂对象
@@ -26,7 +28,7 @@ public class Main {
          */
         Disruptor<OrderEvent> disruptor = new Disruptor<OrderEvent>(
                 new OrderEventFactory(),
-                1024 * 1024,
+                ringBufferSize,
                 executor,
                 ProducerType.SINGLE,
                 new BlockingWaitStrategy()
@@ -46,7 +48,7 @@ public class Main {
         OrderEventProducer producer = new OrderEventProducer(ringBuffer);
         ByteBuffer byteBuffer = ByteBuffer.allocate(8);
 
-        for (long i = 0; i < 100; i++) {
+        for (long i = 0; i < 5; i++) {
             byteBuffer.putLong(0, i);
             producer.sendData(byteBuffer);
         }

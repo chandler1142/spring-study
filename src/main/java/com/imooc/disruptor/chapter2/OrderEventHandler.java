@@ -8,6 +8,7 @@ public class OrderEventHandler implements EventHandler<OrderEvent> {
     @Override
     public void onEvent(OrderEvent orderEvent, long sequence, boolean endOfBatch) throws Exception {
         System.out.println("消费者： " + orderEvent.getValue());
+        Thread.sleep(Integer.MAX_VALUE);
     }
 
 }

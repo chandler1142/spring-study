@@ -24,6 +24,7 @@ public class OrderEventProducer {
         } finally {
             //4.提交操作
             ringBuffer.publish(sequence);
+            System.out.println("Producer send data: " + sequence);
         }
     }
 
