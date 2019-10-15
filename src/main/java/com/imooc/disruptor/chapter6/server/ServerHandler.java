@@ -9,6 +9,7 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
 
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
         try {
+            /**
             TranslatorData request = (TranslatorData) msg;
             System.err.println("Server端: id= " + request.getId()
                     + ", name= " + request.getName()
@@ -19,6 +20,8 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
             response.setMessage("resp: " + request.getMessage());
             response.setName("resp: " + request.getName());
             ctx.writeAndFlush(response);
+             **/
+            
         } finally {
             //一定要注意 用完了缓存 要进行释放
             ReferenceCountUtil.release(msg);
