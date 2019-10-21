@@ -5,10 +5,10 @@
 http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
 
-    <bean id="bookClass" class="com.chandler.spring.SubBook" init-method="myPostConstruct" destroy-method="myPreDestory">
+    <bean id="bookClass" class="com.chandler.spring.lifecycle.SubBook" init-method="myPostConstruct" destroy-method="myPreDestory">
         <property name="bookSystem" value="Java System" />
     </bean>
 
-    <bean class="com.chandler.spring.MyBeanPostProcessor"/>
+    <bean class="com.chandler.spring.lifecycle.MyBeanPostProcessor"/>
 
 </beans>

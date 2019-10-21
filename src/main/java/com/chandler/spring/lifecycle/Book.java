@@ -1,4 +1,4 @@
-package com.chandler.spring;
+package com.chandler.spring.lifecycle;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.*;
